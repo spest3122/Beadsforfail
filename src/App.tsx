@@ -1,18 +1,27 @@
-import { useState, useCallback, useMemo } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
-import { Tracker } from './pages/Tracker';
-import { Log } from './pages/Log';
-import type { Goal, BeadData } from './types';
+import { useCallback, useMemo } from "react";
+import { useLocalStorage } from "./hooks/useLocalStorage";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { Navbar } from "./components/Navbar";
+import { Tracker } from "./pages/Tracker";
+import { Log } from "./pages/Log";
+import type { Goal, BeadData } from "./types";
 
-const DEFAULT_TOTAL = 1000;
+const DEFAULT_TOTAL = 5;
 
 function App() {
-  const [history, setHistory] = useState<Goal[]>([]);
-  const [activeBeads, setActiveBeads] = useState<BeadData[]>([]);
+  const [history, setHistory] = useLocalStorage<Goal[]>("beads_history", []);
+  const [activeBeads, setActiveBeads] = useLocalStorage<BeadData[]>(
+    "beads_active",
+    [],
+  );
 
   const currentGoal = useMemo(() => {
-    return history.find(g => g.status === 'active') || null;
+    return history.find((g) => g.status === "active") || null;
   }, [history]);
 
   const handleSetGoal = useCallback((name: string) => {
@@ -21,59 +30,66 @@ function App() {
       name,
       total: DEFAULT_TOTAL,
       remaining: DEFAULT_TOTAL,
-      status: 'active',
-      createdAt: Date.now()
+      status: "active",
+      createdAt: Date.now(),
     };
-    
-    setHistory(prev => {
-      const updated = prev.map(g => g.status === 'active' ? { ...g, status: 'completed' as const } : g);
+
+    setHistory((prev) => {
+      const updated = prev.map((g) =>
+        g.status === "active" ? { ...g, status: "completed" as const } : g,
+      );
       return [newGoal, ...updated];
     });
   }, []);
 
-  const handleBagInteract = useCallback((x: number, y: number) => {
-    if (!currentGoal || currentGoal.remaining <= 0) return;
+  const handleBagInteract = useCallback(
+    (x: number, y: number) => {
+      if (!currentGoal || currentGoal.remaining <= 0) return;
 
-    const beadId = Math.random().toString(36).substring(2, 9);
-    setActiveBeads(prev => [...prev, { id: beadId, x, y }]);
+      const beadId = Math.random().toString(36).substring(2, 9);
+      setActiveBeads((prev) => [...prev, { id: beadId, x, y }]);
 
-    setHistory(prev => prev.map(g => {
-      if (g.id === currentGoal.id) {
-        const newRemaining = Math.max(0, g.remaining - 1);
-        const newStatus = newRemaining === 0 ? 'completed' : 'active';
-        return { ...g, remaining: newRemaining, status: newStatus };
-      }
-      return g;
-    }));
-  }, [currentGoal]);
+      setHistory((prev) =>
+        prev.map((g) => {
+          if (g.id === currentGoal.id) {
+            const newRemaining = Math.max(0, g.remaining - 1);
+            const newStatus = newRemaining === 0 ? "completed" : "active";
+            return { ...g, remaining: newRemaining, status: newStatus };
+          }
+          return g;
+        }),
+      );
+    },
+    [currentGoal],
+  );
 
   const handleBeadComplete = useCallback((id: string) => {
-    setActiveBeads(prev => prev.filter(b => b.id !== id));
+    setActiveBeads((prev) => prev.filter((b) => b.id !== id));
   }, []);
 
   return (
     <Router>
-      <div className="min-h-screen relative flex flex-col bg-slate-900 text-slate-100 font-sans antialiased overflow-hidden">
+      <div className="min-h-screen relative flex flex-col bg-background text-on-background font-sans antialiased overflow-hidden">
         {/* Background decoration */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="absolute top-0 left-0 w-full h-96 bg-indigo-500/10 rounded-full blur-[120px] -translate-y-1/2"></div>
-          <div className="absolute bottom-0 right-0 w-3/4 h-96 bg-fuchsia-500/10 rounded-full blur-[120px] translate-y-1/2"></div>
+          <div className="absolute top-0 left-0 w-full h-96 bg-primary/10 rounded-full blur-[120px] -translate-y-1/2"></div>
+          <div className="absolute bottom-0 right-0 w-3/4 h-96 bg-secondary/10 rounded-full blur-[120px] translate-y-1/2"></div>
         </div>
 
         <Navbar />
 
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
-              <Tracker 
+              <Tracker
                 currentGoal={currentGoal}
                 activeBeads={activeBeads}
                 onSetGoal={handleSetGoal}
                 onBagInteract={handleBagInteract}
                 onBeadComplete={handleBeadComplete}
               />
-            } 
+            }
           />
           <Route path="/log" element={<Log history={history} />} />
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -12,8 +12,8 @@ export const Navbar: React.FC = () => {
           className={({ isActive }) => cn(
             "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
             isActive 
-              ? "bg-indigo-500/20 text-indigo-300 shadow-[inset_0_1px_4px_rgba(255,255,255,0.1)]" 
-              : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
+              ? "bg-primary/10 text-primary shadow-[inset_0_1px_4px_rgba(0,0,0,0.1)]" 
+              : "text-on-background/60 hover:text-on-background hover:bg-black/5"
           )}
         >
           <Target className="w-4 h-4" />
@@ -24,8 +24,8 @@ export const Navbar: React.FC = () => {
           className={({ isActive }) => cn(
             "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
             isActive 
-              ? "bg-indigo-500/20 text-indigo-300 shadow-[inset_0_1px_4px_rgba(255,255,255,0.1)]" 
-              : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
+              ? "bg-primary/10 text-primary shadow-[inset_0_1px_4px_rgba(0,0,0,0.1)]" 
+              : "text-on-background/60 hover:text-on-background hover:bg-black/5"
           )}
         >
           <List className="w-4 h-4" />

@@ -26,6 +26,7 @@ vi.mock('framer-motion', async () => {
 describe('Gamified Goal Tracker', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    window.localStorage.clear();
   });
 
   it('should allow setting a goal and tap the bag to spawn beads', async () => {
@@ -40,9 +41,9 @@ describe('Gamified Goal Tracker', () => {
 
 
 
-    // Goal should be set with 1000 total
+    // Goal should be set with 5 total
     await waitFor(() => expect(screen.getByText('Test Goal')).toBeInTheDocument());
-    expect(screen.getAllByText('1000').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('5').length).toBeGreaterThan(0);
     expect(screen.getByText('Remaining')).toBeInTheDocument();
 
     // 2. Tap the bag to spawn beads
@@ -57,7 +58,7 @@ describe('Gamified Goal Tracker', () => {
     }
 
     // 3. Verify Remaining decreased by 3
-    await waitFor(() => expect(screen.getByText('997')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('2')).toBeInTheDocument());
 
     // 4. Check if Beads are rendered in the DOM
     // In our implementation, beads don't have distinct text but they have a specific class.

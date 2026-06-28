@@ -22,10 +22,10 @@ export const Header: React.FC<HeaderProps> = ({ currentGoal, onSetGoal }) => {
             className="w-full"
           >
             <div className="text-center mb-8">
-              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-4">
-                What's your next focus?
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary-variant mb-4">
+                What's your next big goal?
               </h1>
-              <p className="text-slate-400 text-lg">Set a goal and drop 1,000 beads to achieve it.</p>
+              <p className="text-on-background/70 text-lg">Set a goal and drop 1,000 beads to achieve it.</p>
             </div>
             <GoalForm onSetGoal={onSetGoal} />
           </motion.div>
@@ -38,7 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ currentGoal, onSetGoal }) => {
           >
             <motion.h1 
               layoutId="goal-name"
-              className="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-indigo-200 to-white"
+              className="text-4xl md:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-primary to-primary-variant"
             >
               {currentGoal.name}
             </motion.h1>
@@ -50,16 +50,16 @@ export const Header: React.FC<HeaderProps> = ({ currentGoal, onSetGoal }) => {
               className="glass px-6 py-3 rounded-2xl flex items-center gap-4"
             >
               <div className="flex items-baseline gap-2 font-mono">
-                <span className="text-3xl font-bold text-indigo-300">
-                  {currentGoal.remaining}
+                <span className="text-3xl font-bold text-primary">
+                  {currentGoal.remaining.toLocaleString()}
                 </span>
-                <span className="text-slate-500 text-xl">/</span>
-                <span className="text-slate-400 text-xl">
+                <span className="text-on-background/40 text-xl">/</span>
+                <span className="text-on-background/60 text-xl">
                   {currentGoal.total}
                 </span>
               </div>
-              <div className="w-px h-8 bg-white/10 mx-2"></div>
-              <div className="text-sm text-slate-300 uppercase tracking-widest font-semibold">
+              <div className="w-px h-8 bg-black/15 mx-2"></div>
+              <div className="text-sm text-on-background/70 uppercase tracking-widest font-semibold">
                 Remaining
               </div>
             </motion.div>

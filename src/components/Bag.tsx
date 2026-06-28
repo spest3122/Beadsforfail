@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useAnimation } from 'framer-motion';
+import { cn } from '../utils';
 
 interface BagProps {
   onInteract: (x: number, y: number) => void;
@@ -36,8 +37,8 @@ export const Bag: React.FC<BagProps> = ({ onInteract, disabled }) => {
 
   return (
     <div className="relative flex justify-center items-center w-full max-w-sm mx-auto h-64 mt-12 z-20">
-      {/* Decorative Glow */}
-      <div className="absolute inset-0 bg-indigo-500/20 blur-[100px] rounded-full pointer-events-none transition-opacity duration-1000"></div>
+      {/* Ambient glow */}
+      <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full pointer-events-none transition-opacity duration-1000"></div>
 
       <motion.div
         ref={bagRef}
@@ -45,9 +46,10 @@ export const Bag: React.FC<BagProps> = ({ onInteract, disabled }) => {
         whileHover={!disabled ? { scale: 1.05, cursor: 'pointer' } : {}}
         onMouseDown={handleInteraction}
         onTouchStart={handleInteraction}
-        className={`relative w-48 h-56 rounded-[2rem] shadow-2xl flex items-center justify-center transition-all duration-300 ${
-          disabled ? 'opacity-50 grayscale cursor-not-allowed' : 'glass hover:shadow-indigo-500/20'
-        }`}
+        className={cn(
+          "relative w-48 h-56 rounded-[2rem] shadow-2xl flex items-center justify-center transition-all duration-300",
+          disabled ? 'opacity-50 grayscale cursor-not-allowed' : 'glass hover:shadow-primary/20'
+        )}
         style={{
           borderBottomLeftRadius: '3rem',
           borderBottomRightRadius: '3rem',
@@ -64,7 +66,7 @@ export const Bag: React.FC<BagProps> = ({ onInteract, disabled }) => {
         <div className="absolute inset-2 rounded-[inherit] shadow-[inset_0_0_20px_rgba(255,255,255,0.1)] border border-white/10 pointer-events-none"></div>
 
         {!disabled && (
-          <div className="text-white/40 font-semibold tracking-widest uppercase text-sm select-none">
+          <div className="text-primary/60 font-semibold tracking-widest uppercase text-sm select-none">
             Tap Me
           </div>
         )}

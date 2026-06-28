@@ -13,9 +13,9 @@ export const Log: React.FC<LogProps> = ({ history }) => {
         {history.length > 0 ? (
           <HistoryList history={history} />
         ) : (
-          <div className="mt-20 text-center text-slate-400">
-            <p className="text-xl">Your journey log is empty.</p>
-            <p className="mt-2 text-sm">Start a new goal to see it here!</p>
+          <div className="mt-20 text-center text-on-background/70">
+            <p className="text-lg">No goals yet.</p>
+            <p className="text-sm opacity-70">Set a goal to start your journey.</p>
           </div>
         )}
       </div>
