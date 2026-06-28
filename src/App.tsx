@@ -68,7 +68,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <div className="min-h-screen relative flex flex-col bg-background text-on-background font-sans antialiased overflow-hidden">
         {/* Background decoration */}
         <div className="fixed inset-0 pointer-events-none z-0">
