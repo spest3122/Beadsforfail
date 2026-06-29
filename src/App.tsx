@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
@@ -11,6 +11,8 @@ const DEFAULT_TOTAL = 1000;
 function App() {
     const [history, setHistory] = useLocalStorage<Goal[]>("beads_history", []);
     const [activeBeads, setActiveBeads] = useLocalStorage<BeadData[]>("beads_active", []);
+    const [showCelebration, setShowCelebration] = useState(false);
+    const [celebrationGoalName, setCelebrationGoalName] = useState("");
 
     const currentGoal = useMemo(() => {
         return history.find((g) => g.status === "active") || null;
@@ -41,19 +43,33 @@ function App() {
             const beadId = Math.random().toString(36).substring(2, 9);
             setActiveBeads((prev) => [...prev, { id: beadId, x, y }]);
 
+            const newRemaining = Math.max(0, currentGoal.remaining - 1);
+
             setHistory((prev) =>
                 prev.map((g) => {
                     if (g.id === currentGoal.id) {
-                        const newRemaining = Math.max(0, g.remaining - 1);
                         const newStatus = newRemaining === 0 ? "completed" : "active";
                         return { ...g, remaining: newRemaining, status: newStatus };
                     }
                     return g;
                 }),
             );
+
+            if (newRemaining === 0) {
+                setCelebrationGoalName(currentGoal.name);
+                setShowCelebration(true);
+            }
         },
         [currentGoal],
     );
+
+    const handleDismissCelebration = useCallback(() => {
+        setShowCelebration(false);
+    }, []);
+
+    const handleStartNewGoal = useCallback(() => {
+        setShowCelebration(false);
+    }, []);
 
     const handleBeadComplete = useCallback((id: string) => {
         setActiveBeads((prev) => prev.filter((b) => b.id !== id));
@@ -61,7 +77,7 @@ function App() {
 
     return (
         <Router basename={import.meta.env.BASE_URL}>
-            <div className="min-h-screen relative flex flex-col bg-background text-on-background font-sans antialiased overflow-hidden">
+            <div className="min-h-[100dvh] relative flex flex-col bg-background text-on-background font-sans antialiased overflow-hidden">
                 {/* Background decoration */}
                 <div className="fixed inset-0 pointer-events-none z-0">
                     <div className="absolute top-0 left-0 w-full h-96 bg-primary/10 rounded-full blur-[120px] -translate-y-1/2"></div>
@@ -80,6 +96,10 @@ function App() {
                                 onSetGoal={handleSetGoal}
                                 onBagInteract={handleBagInteract}
                                 onBeadComplete={handleBeadComplete}
+                                showCelebration={showCelebration}
+                                celebrationGoalName={celebrationGoalName}
+                                onDismissCelebration={handleDismissCelebration}
+                                onStartNewGoal={handleStartNewGoal}
                             />
                         }
                     />

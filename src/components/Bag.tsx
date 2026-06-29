@@ -44,8 +44,7 @@ export const Bag: React.FC<BagProps> = ({ onInteract, disabled }) => {
         ref={bagRef}
         animate={controls}
         whileHover={!disabled ? { scale: 1.05, cursor: 'pointer' } : {}}
-        onMouseDown={handleInteraction}
-        onTouchStart={handleInteraction}
+        onClick={handleInteraction}
         className={cn(
           "relative w-48 h-56 rounded-[2rem] shadow-2xl flex items-center justify-center transition-all duration-300",
           disabled ? 'opacity-50 grayscale cursor-not-allowed' : 'glass hover:shadow-primary/20'
@@ -55,7 +54,9 @@ export const Bag: React.FC<BagProps> = ({ onInteract, disabled }) => {
           borderBottomRightRadius: '3rem',
           borderTopLeftRadius: '1.5rem',
           borderTopRightRadius: '1.5rem',
+          touchAction: 'manipulation',
         }}
+
       >
         {/* Drawstrings/Top of Bag Styling */}
         <div className="absolute top-0 w-full h-8 flex justify-center -mt-2">

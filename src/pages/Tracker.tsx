@@ -1,7 +1,9 @@
 import React from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Header } from '../components/Header';
 import { Bag } from '../components/Bag';
 import { Bead } from '../components/Bead';
+import { CelebrationModal } from '../components/CelebrationModal';
 import type { Goal, BeadData } from '../types';
 
 interface TrackerProps {
@@ -10,6 +12,10 @@ interface TrackerProps {
   onSetGoal: (name: string) => void;
   onBagInteract: (x: number, y: number) => void;
   onBeadComplete: (id: string) => void;
+  showCelebration: boolean;
+  celebrationGoalName: string;
+  onDismissCelebration: () => void;
+  onStartNewGoal: () => void;
 }
 
 export const Tracker: React.FC<TrackerProps> = ({ 
@@ -17,7 +23,11 @@ export const Tracker: React.FC<TrackerProps> = ({
   activeBeads, 
   onSetGoal, 
   onBagInteract,
-  onBeadComplete
+  onBeadComplete,
+  showCelebration,
+  celebrationGoalName,
+  onDismissCelebration,
+  onStartNewGoal,
 }) => {
   return (
     <div className="flex-1 flex flex-col pt-24 px-6 relative z-10 w-full h-full">
@@ -40,6 +50,19 @@ export const Tracker: React.FC<TrackerProps> = ({
           onComplete={onBeadComplete}
         />
       ))}
+
+      {/* Celebration overlay */}
+      <AnimatePresence>
+        {showCelebration && (
+          <CelebrationModal
+            key="celebration"
+            goalName={celebrationGoalName}
+            isVisible={showCelebration}
+            onClose={onDismissCelebration}
+            onStartNewGoal={onStartNewGoal}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

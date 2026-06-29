@@ -29,6 +29,11 @@ export const GoalForm: React.FC<GoalFormProps> = ({ onSetGoal }) => {
               onChange={(e) => setGoalName(e.target.value)}
               placeholder="What are you working towards?"
               className="bg-transparent border-none outline-none text-on-background placeholder:text-on-background/50 flex-1 min-w-0 text-lg"
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              style={{ background: 'transparent', WebkitAppearance: 'none' }}
               autoFocus
             />
             <button

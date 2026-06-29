@@ -23,6 +23,27 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    /* Use dynamic viewport height so layout shrinks when iOS keyboard appears */
+    min-height: 100dvh;
+  }
+
+  /* Fix iOS Safari white background on inputs */
+  input,
+  textarea {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border-radius: 0;
+  }
+
+  /* Fix iOS Safari autofill yellow/white background */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+    box-shadow: 0 0 0 1000px transparent inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: var(--color-on-background) !important;
   }
 }
 
@@ -34,5 +55,12 @@
   
   .glass-bead {
     @apply bg-gradient-to-br from-primary to-primary-variant backdrop-blur-sm border border-white/40 shadow-[0_4px_12px_rgba(98,0,238,0.2),inset_0_2px_4px_rgba(255,255,255,0.4)];
+  }
+
+  /* Ensure gradient text renders above fixed background blobs (Bug 1 fix) */
+  .bg-clip-text {
+    isolation: isolate;
+    position: relative;
+    z-index: 1;
   }
 }
