@@ -47,6 +47,7 @@ export const Tracker: React.FC<TrackerProps> = ({
           id={bead.id}
           x={bead.x}
           y={bead.y}
+          imageIndex={bead.imageIndex}
           onComplete={onBeadComplete}
         />
       ))}

@@ -5,6 +5,7 @@ import { Navbar } from "./components/Navbar";
 import { Tracker } from "./pages/Tracker";
 import { Log } from "./pages/Log";
 import type { Goal, BeadData } from "./types";
+import { BEAD_LENGTH } from "./components/Bead";
 
 const DEFAULT_TOTAL = 1000;
 
@@ -41,7 +42,8 @@ function App() {
             if (!currentGoal || currentGoal.remaining <= 0) return;
 
             const beadId = Math.random().toString(36).substring(2, 9);
-            setActiveBeads((prev) => [...prev, { id: beadId, x, y }]);
+            const imageIndex = Math.floor(Math.random() * BEAD_LENGTH);
+            setActiveBeads((prev) => [...prev, { id: beadId, x, y, imageIndex }]);
 
             const newRemaining = Math.max(0, currentGoal.remaining - 1);
 
